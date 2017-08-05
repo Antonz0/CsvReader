@@ -40,6 +40,8 @@ namespace LumenWorks.Framework.IO.Csv
     public partial class CsvReader : IEnumerable<string[]>
 #if !NO_DATA_BINDING
     , IDataReader
+#else
+    , IDisposable
 #endif
     {
         /// <summary>
