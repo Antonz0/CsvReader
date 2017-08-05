@@ -22,8 +22,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !NO_DATA_BINDING
 using System.Data;
 using System.Data.Common;
+#endif
 using Debug = System.Diagnostics.Debug;
 using System.Globalization;
 using System.IO;
@@ -35,7 +37,10 @@ namespace LumenWorks.Framework.IO.Csv
     /// <summary>
     /// Represents a reader that provides fast, non-cached, forward-only access to CSV data.  
     /// </summary>
-    public partial class CsvReader : IDataReader, IEnumerable<string[]>
+    public partial class CsvReader : IEnumerable<string[]>
+#if !NO_DATA_BINDING
+    , IDataReader
+#endif
     {
         /// <summary>
         /// Defines the default buffer size.
@@ -1983,6 +1988,7 @@ namespace LumenWorks.Framework.IO.Csv
             return length;
         }
 
+#if !NO_DATA_BINDING
         int IDataReader.RecordsAffected
         {
             get
@@ -2325,6 +2331,7 @@ namespace LumenWorks.Framework.IO.Csv
             ValidateDataReader(DataReaderValidations.IsInitialized | DataReaderValidations.IsNotClosed);
             return short.Parse(this[i], CultureInfo.CurrentCulture);
         }
+#endif // !NO_DATA_BINDING
 
         object FieldValue(int i)
         {

@@ -33,7 +33,10 @@ namespace LumenWorks.Framework.IO.Csv
     /// Represents a reader that provides fast, cached, dynamic access to CSV data.
     /// </summary>
     /// <remarks>The number of records is limited to <see cref="System.Int32.MaxValue"/> - 1.</remarks>
-    public class CachedCsvReader : CsvReader, IListSource
+    public class CachedCsvReader : CsvReader
+#if !NO_DATA_BINDING
+        , IListSource
+#endif
     {
         /// <summary>
         /// Contains the current record index (inside the cached records array).
@@ -48,7 +51,9 @@ namespace LumenWorks.Framework.IO.Csv
         /// <summary>
         /// Contains the binding list linked to this reader.
         /// </summary>
+#if !NO_DATA_BINDING
         private CsvBindingList _bindingList;
+#endif
 
         /// <summary>
         /// Initializes a new instance of the CsvReader class.
@@ -355,6 +360,7 @@ namespace LumenWorks.Framework.IO.Csv
             return base.MoveTo(record);
         }
 
+#if !NO_DATA_BINDING
         bool IListSource.ContainsListCollection
         {
             get { return false; }
@@ -364,5 +370,6 @@ namespace LumenWorks.Framework.IO.Csv
         {
             return _bindingList ?? (_bindingList = new CsvBindingList(this));
         }
+#endif
     }
 }
